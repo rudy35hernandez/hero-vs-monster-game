@@ -10,13 +10,14 @@ app working again.
 */
 
 
-function Character(data) {
-    Object.assign(this, data)
-    
-    
-    this.maxHealth = this.health
-    
-    this.getHealthBarHtml = () => {
+class Character {
+    constructor(data){
+        Object.assign(this, data)
+        this.maxHealth = this.health
+        this.diceHtml = getDicePlaceholderHtml(this.diceCount)
+    }
+   
+    getHealthBarHtml(){
         const percent = getPercentage(this.health, this.maxHealth)
         
         return `
@@ -27,16 +28,13 @@ function Character(data) {
         </div>
         `
     }
-    
-    this.diceHtml = getDicePlaceholderHtml(this.diceCount)
 
-    this.setDiceHtml = () => {
+    setDiceHtml(){
         this.currentDiceScore = getDiceRollArray(this.diceCount)
         this.diceHtml = this.currentDiceScore.map(num => `<div class="dice">${num}</div>`).join('')
     } 
     
-
-    this.takeDamage = function(attackScoreArray){
+    takeDamage(attackScoreArray){
         let totalAttackScore = attackScoreArray.reduce((num, acc) => num + acc,0)
         this.health -= totalAttackScore
         
@@ -47,7 +45,7 @@ function Character(data) {
 
     }
 
-    this.getCharacterHtml = () => {
+    getCharacterHtml(){
         const { elementId, name, avatar, health, diceCount, diceHtml } = this;   
         
         const healthBar = this.getHealthBarHtml()
