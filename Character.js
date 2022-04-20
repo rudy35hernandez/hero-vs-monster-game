@@ -21,8 +21,14 @@ function Character(data) {
     } 
     
 
-    this.takeDamage = function(){
-        consol
+    this.takeDamage = function(attackScoreArray){
+        let totalAttackScore = attackScoreArray.reduce((num, acc) => num + acc,0)
+        this.health -= totalAttackScore
+        
+        if(this.health <= 0){
+            return this.health = 0
+        }
+
     }
 
     this.getCharacterHtml = function () {
