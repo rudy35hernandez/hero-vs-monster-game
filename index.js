@@ -11,6 +11,18 @@ function attack(){
     wizard.takeDamage(orc.currentDiceScore)
     orc.takeDamage(wizard.currentDiceScore)
     render()
+
+    if(wizard.dead || orc.dead){
+        endGame()
+    }
+}
+
+function endGame(){
+    const endMessage = orc.dead && !wizard.dead ? "The wizard wins" :
+                       wizard.dead && !orc.dead ? "The orc wins" : 
+                       "no victors"
+    
+    console.log(endMessage)
 }
 
 function render(){
