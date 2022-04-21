@@ -18,11 +18,23 @@ function attack(){
 }
 
 function endGame(){
-    const endMessage = orc.dead && !wizard.dead ? "The wizard wins" :
-                       wizard.dead && !orc.dead ? "The orc wins" : 
-                       "no victors"
+    const endEmoji = wizard.health === 0 && orc.health === 0 ?
+        "☠️" :
+        wizard.health > 0 ? "🔮" :
+        "☠️"
+        
+    const endMessage = wizard.health === 0 && orc.health === 0 ?
+        "No victors - all creatures are dead" :
+        wizard.health > 0 ? "The Wizard Wins" :
+        "The Orc is Victorious"
+        
+    let endGameHtml = `<div class="end-game">
+        <h2>Game Over</h2>
+        <h3>${endMessage}</h3>
+        <p class="end-emoji">${endEmoji}</p>
+    </div>` 
     
-    console.log(endMessage)
+    document.body.innerHTML = endGameHtml
 }
 
 function render(){
