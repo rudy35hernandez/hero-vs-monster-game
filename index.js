@@ -1,9 +1,15 @@
 import characterData from "./data.js";
 import Character from "./Character.js";
 
-
-
 document.getElementById("attack-button").addEventListener("click", attack)
+
+let monstersArray = ["orc", "demon", "goblin"];
+
+
+function getNewMonster(arr){
+    const nextMonsterData = characterData[monstersArray.shift()]
+    return nextMonsterData
+}
 
 function attack(){
     wizard.getDiceHtml()
