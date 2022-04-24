@@ -6,8 +6,8 @@ document.getElementById("attack-button").addEventListener("click", attack)
 let monstersArray = ["orc", "demon", "goblin"];
 
 
-function getNewMonster(arr){
-    const nextMonsterData = characterData[arr.shift()]
+function getNewMonster(){
+    const nextMonsterData = characterData[monstersArray.shift()]
     return nextMonsterData ? new Character(nextMonsterData) : {}
 }
 
@@ -18,29 +18,38 @@ function attack(){
     monster.takeDamage(wizard.currentDiceScore)
     render()
 
-    if(wizard.dead || monster.dead){
+    if(wizard.dead){
         endGame()
+    }
+    else if(monster.dead){
+        if(monstersArray.length > 0){
+            setTimeout(function(){
+                monster = getNewMonster()
+                render() 
+            }, 1500)
+        }
+        else {
+            endGame()
+        }
     }
 }
 
 function endGame(){
-    const endEmoji = wizard.health === 0 && monster.health === 0 ?
-        "☠️" :
-        wizard.health > 0 ? "🔮" :
-        "☠️"
-        
     const endMessage = wizard.health === 0 && monster.health === 0 ?
-        "No victors - all creatures are dead" :
-        wizard.health > 0 ? "The Wizard Wins" :
-        `The monster is Victorious`
-        
-    let endGameHtml = `<div class="end-game">
-        <h2>Game Over</h2>
-        <h3>${endMessage}</h3>
-        <p class="end-emoji">${endEmoji}</p>
-    </div>` 
-    
-    document.body.innerHTML = endGameHtml
+    "No victors - all creatures are dead" :
+    wizard.health > 0 ? "The Wizard Wins" :
+        "The Orc is Victorious"
+
+const endEmoji = wizard.health > 0 ? "🔮" : "☠️"
+setTimeout(()=>{
+    document.body.innerHTML = `
+        <div class="end-game">
+            <h2>Game Over</h2> 
+            <h3>${endMessage}</h3>
+            <p class="end-emoji">${endEmoji}</p>
+        </div>
+        `
+}, 1500)
 }
 
 function render(){
@@ -49,6 +58,6 @@ function render(){
 }
 
 const wizard = new Character(characterData.hero)
-let monster = getNewMonster(monstersArray)
+let monster = getNewMonster()
 
 render()
